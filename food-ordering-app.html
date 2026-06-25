@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مطعم نور | Nour Restaurant</title>
+<style>
+  :root {
+    --primary: #E8572A;
+    --primary-dark: #C44420;
+    --primary-light: #FFF0EB;
+    --secondary: #2B2B2B;
+    --accent: #F5A623;
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --border: #E8E4DC;
+    --text: #1A1A1A;
+    --text-muted: #6B6560;
+    --success: #2E7D52;
+    --success-bg: #E8F5EE;
+    --warning-bg: #FFF8E6;
+    --warning: #A0600A;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  body[dir="rtl"] { font-family: 'Segoe UI', 'Tahoma', system-ui, sans-serif; }
+
+  /* NAV */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .logo span { color: var(--secondary); }
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .btn { padding: 8px 16px; border-radius: var(--radius-sm); border: none; cursor: pointer; font-size: 0.875rem; font-weight: 500; transition: all 0.15s; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-ghost { background: transparent; border: none; color: var(--text-muted); padding: 8px; }
+  .btn-ghost:hover { color: var(--primary); }
+  .cart-btn { position: relative; background: var(--primary-light); color: var(--primary); border: none; border-radius: var(--radius-sm); padding: 8px 14px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
+  .cart-btn:hover { background: var(--primary); color: white; }
+  .cart-count { background: var(--primary); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .cart-btn:hover .cart-count { background: white; color: var(--primary); }
+  .lang-toggle { background: transparent; border: 1.5px solid var(--border); color: var(--text); border-radius: 20px; padding: 5px 12px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.15s; }
+  .lang-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #2B1810 0%, #5C2E1A 100%); color: white; padding: 5rem 1.5rem; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 70% 50%, rgba(232,87,42,0.3) 0%, transparent 60%); }
+  .hero-content { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { font-size: 1.1rem; opacity: 0.85; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-hero { padding: 14px 28px; border-radius: var(--radius); font-size: 1rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-hero-primary { background: var(--primary); color: white; }
+  .btn-hero-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-hero-secondary { background: rgba(255,255,255,0.1); color: white; border: 1.5px solid rgba(255,255,255,0.3); }
+  .btn-hero-secondary:hover { background: rgba(255,255,255,0.2); }
+
+  /* MENU */
+  .menu-section { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .section-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .section-sub { color: var(--text-muted); margin-bottom: 2rem; }
+  .categories { display: flex; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; }
+  .cat-btn { padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); cursor: pointer; font-size: 0.875rem; font-weight: 500; transition: all 0.15s; color: var(--text-muted); }
+  .cat-btn.active, .cat-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .menu-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+  .menu-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .menu-card-img { width: 100%; height: 200px; object-fit: cover; display: block; background: var(--bg); font-size: 5rem; display: flex; align-items: center; justify-content: center; }
+  .menu-card-body { padding: 1.25rem; }
+  .menu-card-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+  .menu-card-desc { color: var(--text-muted); font-size: 0.875rem; line-height: 1.5; margin-bottom: 1rem; }
+  .menu-card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .price { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
+  .price small { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); }
+  .add-btn { background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); padding: 8px 16px; cursor: pointer; font-weight: 600; font-size: 0.875rem; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
+  .add-btn:hover { background: var(--primary-dark); }
+  .badge { display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; margin-bottom: 8px; }
+  .badge-popular { background: #FEF3E2; color: #B45309; }
+  .badge-new { background: #E0F2FE; color: #0369A1; }
+  .badge-spicy { background: #FEE2E2; color: #B91C1C; }
+
+  /* CART SIDEBAR */
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; }
+  .overlay.open { display: block; }
+  .cart-sidebar { position: fixed; top: 0; right: -420px; width: 420px; max-width: 100vw; height: 100vh; background: var(--surface); z-index: 201; transition: right 0.3s ease; overflow-y: auto; display: flex; flex-direction: column; box-shadow: var(--shadow-lg); }
+  .cart-sidebar.open { right: 0; }
+  body[dir="rtl"] .cart-sidebar { right: auto; left: -420px; }
+  body[dir="rtl"] .cart-sidebar.open { left: 0; right: auto; }
+  .cart-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--surface); }
+  .cart-header h2 { font-size: 1.2rem; font-weight: 700; }
+  .cart-body { flex: 1; padding: 1.25rem 1.5rem; overflow-y: auto; }
+  .cart-empty { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+  .cart-empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .cart-item { display: flex; gap: 12px; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+  .cart-item-img { width: 56px; height: 56px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 2rem; background: var(--bg); flex-shrink: 0; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+  .cart-item-price { color: var(--primary); font-weight: 600; font-size: 0.875rem; }
+  .qty-controls { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .qty-btn { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); background: white; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-weight: 600; }
+  .qty-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .qty-num { font-weight: 700; min-width: 20px; text-align: center; }
+  .remove-btn { color: var(--text-muted); background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 4px; transition: color 0.15s; }
+  .remove-btn:hover { color: #DC2626; }
+  .cart-footer { padding: 1.5rem; border-top: 1px solid var(--border); background: var(--surface); }
+  .cart-summary { margin-bottom: 1rem; }
+  .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
+  .summary-row.total { font-weight: 700; font-size: 1.05rem; color: var(--text); border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px; }
+  .checkout-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .checkout-btn:hover { background: var(--primary-dark); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 1rem; display: none; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 480px; overflow: hidden; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto; }
+  .modal-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .modal-header h2 { font-size: 1.2rem; font-weight: 700; }
+  .modal-body { padding: 1.5rem; }
+  .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .form-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.925rem; background: var(--bg); color: var(--text); transition: border-color 0.15s; }
+  .form-input:focus { outline: none; border-color: var(--primary); background: white; }
+  .form-error { color: #DC2626; font-size: 0.8rem; margin-top: 4px; display: none; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 1.5rem; }
+  .tab { padding: 10px 18px; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+  .tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* PAYMENT */
+  .payment-option { display: flex; align-items: center; gap: 14px; padding: 14px; border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer; margin-bottom: 10px; transition: all 0.15s; }
+  .payment-option:hover, .payment-option.selected { border-color: var(--primary); background: var(--primary-light); }
+  .payment-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+  .payment-info { flex: 1; }
+  .payment-name { font-weight: 600; font-size: 0.95rem; }
+  .payment-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+  .payment-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .payment-option.selected .payment-radio { border-color: var(--primary); }
+  .payment-option.selected .payment-radio::after { content: ''; width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display: block; }
+  .card-fields { margin-top: 12px; display: none; }
+  .card-fields.show { display: block; }
+
+  /* ORDER TRACKING */
+  .tracking-page { max-width: 700px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .order-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .order-id { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+  .order-status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+  .status-preparing { background: var(--warning-bg); color: var(--warning); }
+  .status-confirmed { background: var(--success-bg); color: var(--success); }
+  .status-delivered { background: #E0F2FE; color: #0369A1; }
+  .status-cancelled { background: #FEE2E2; color: #B91C1C; }
+  .steps { display: flex; margin: 1.5rem 0; position: relative; }
+  .steps::before { content: ''; position: absolute; top: 16px; left: 16px; right: 16px; height: 2px; background: var(--border); z-index: 0; }
+  .step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; gap: 8px; }
+  .step-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: all 0.3s; }
+  .step.done .step-dot { background: var(--success); border-color: var(--success); color: white; }
+  .step.active .step-dot { background: var(--primary); border-color: var(--primary); color: white; animation: pulse 1.5s infinite; }
+  .step-label { font-size: 0.75rem; text-align: center; color: var(--text-muted); }
+  .step.done .step-label, .step.active .step-label { color: var(--text); font-weight: 600; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(232,87,42,0.4)} 50%{box-shadow:0 0 0 8px rgba(232,87,42,0)} }
+
+  /* ADMIN */
+  .admin-page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .admin-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 2rem; width: fit-content; }
+  .admin-tab { padding: 8px 18px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.875rem; font-weight: 500; color: var(--text-muted); transition: all 0.15s; border: none; background: none; }
+  .admin-tab.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+  .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+  .stat-value { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+  .stat-value.primary { color: var(--primary); }
+  .stat-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .data-table th { text-align: left; padding: 10px 14px; background: var(--bg); font-weight: 600; color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+  body[dir="rtl"] .data-table th { text-align: right; }
+  .data-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg); }
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .item-thumb { width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+  .action-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 0.8rem; font-weight: 500; transition: all 0.15s; }
+  .action-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .action-btn.danger:hover { background: #DC2626; border-color: #DC2626; }
+  .toggle { width: 40px; height: 22px; background: var(--border); border-radius: 11px; cursor: pointer; position: relative; transition: background 0.2s; }
+  .toggle.on { background: var(--success); }
+  .toggle::after { content: ''; position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: left 0.2s; }
+  .toggle.on::after { left: 20px; }
+  .admin-section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
+  .alert { padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.875rem; margin-bottom: 1.5rem; }
+  .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #A7F3D0; }
+  .alert-info { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
+  .select-input { width: 100%; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); font-size: 0.875rem; cursor: pointer; }
+  .select-input:focus { outline: none; border-color: var(--primary); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2rem; }
+    .cart-sidebar { width: 100vw; }
+    .form-row { grid-template-columns: 1fr; }
+    .steps::before { left: 10px; right: 10px; }
+  }
+
+  /* RTL ADJUSTMENTS */
+  body[dir="rtl"] .cart-item { flex-direction: row-reverse; }
+  body[dir="rtl"] .payment-option { flex-direction: row-reverse; }
+  body[dir="rtl"] .data-table th { text-align: right; }
+  body[dir="rtl"] .data-table td { text-align: right; }
+  body[dir="rtl"] .modal-footer { flex-direction: row-reverse; }
+
+  /* TOAST */
+  .toast-container { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 500; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+  .toast { background: #1A1A1A; color: white; padding: 12px 20px; border-radius: var(--radius); font-size: 0.875rem; font-weight: 500; box-shadow: var(--shadow-lg); animation: slideUp 0.3s ease; min-width: 240px; text-align: center; }
+  .toast.success { background: var(--success); }
+  .toast.error { background: #DC2626; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* PROFILE/AUTH */
+  .auth-form { max-width: 400px; margin: 0 auto; }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 1.25rem 0; color: var(--text-muted); font-size: 0.8rem; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .star { color: var(--accent); font-size: 0.9rem; }
+  .rating { display: flex; gap: 2px; }
+
+  /* Order history */
+  .order-history-item { padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1rem; }
+  .order-hist-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .order-hist-items { font-size: 0.85rem; color: var(--text-muted); }
+  .mini-items-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .mini-item-chip { background: var(--bg); padding: 3px 8px; border-radius: 20px; font-size: 0.78rem; color: var(--text-muted); border: 1px solid var(--border); }
+
+  .search-bar { position: relative; margin-bottom: 1.5rem; }
+  .search-bar input { width: 100%; padding: 11px 16px 11px 42px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: 0.925rem; background: var(--surface); }
+  .search-bar input:focus { outline: none; border-color: var(--primary); }
+  .search-bar .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1rem; }
+  body[dir="rtl"] .search-bar input { padding: 11px 42px 11px 16px; }
+  body[dir="rtl"] .search-bar .search-icon { left: auto; right: 14px; }
+</style>
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2 id="cartTitle">Your Order</h2>
+    <button class="btn-ghost" onclick="closeCart()" style="font-size:1.3rem;">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="cart-empty-icon">🛒</div>
+      <p id="cartEmptyText">Your cart is empty</p>
+    </div>
+    <div id="cartItems"></div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-summary">
+      <div class="summary-row"><span id="subtotalLabel">Subtotal</span><span id="cartSubtotal">0 EGP</span></div>
+      <div class="summary-row"><span id="deliveryLabel">Delivery</span><span>15 EGP</span></div>
+      <div class="summary-row total"><span id="totalLabel">Total</span><span id="cartTotal">0 EGP</span></div>
+    </div>
+    <button class="checkout-btn" onclick="openCheckout()" id="checkoutBtn">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="showPage('home')">🍽 <span id="logoText">Nour</span></div>
+    <div class="nav-actions">
+      <button class="btn-ghost" onclick="showPage('track')" id="navTrack" style="font-size:0.875rem;">Track Order</button>
+      <button class="btn-ghost" onclick="showPage('admin')" id="navAdmin" style="font-size:0.875rem;display:none;">Admin</button>
+      <button class="cart-btn" onclick="toggleCart()" id="cartBtnNav">
+        🛒 <span id="cartLabel">Cart</span>
+        <span class="cart-count" id="cartCountBadge">0</span>
+      </button>
+      <button class="btn-outline" onclick="openAuth()" id="loginBtn">Login</button>
+      <button class="btn-ghost" onclick="logout()" id="logoutBtn" style="display:none;font-size:0.875rem;">Sign out</button>
+      <button class="lang-toggle" onclick="toggleLang()">عربي</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="homePage">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1 id="heroTitle">Authentic Flavors <span>Delivered</span> to You</h1>
+      <p id="heroSub">From our kitchen to your door — fresh, fast, and full of love.</p>
+      <div class="hero-actions">
+        <button class="btn-hero btn-hero-primary" onclick="document.getElementById('menuSection').scrollIntoView({behavior:'smooth'})" id="orderNowBtn">Order Now</button>
+        <button class="btn-hero btn-hero-secondary" onclick="showPage('track')" id="trackBtn">Track Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div class="menu-section" id="menuSection">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
+      <div>
+        <h2 class="section-title" id="menuTitle">Our Menu</h2>
+        <p class="section-sub" id="menuSub">Freshly prepared with premium ingredients</p>
+      </div>
+    </div>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search dishes..." oninput="filterMenu()" />
+    </div>
+    <div class="categories" id="categoriesBar"></div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+</div>
+
+<!-- ===== ORDER TRACKING PAGE ===== -->
+<div class="page" id="trackPage">
+  <div class="tracking-page">
+    <h2 class="section-title" id="trackTitle" style="margin-bottom:0.4rem;">Track Your Order</h2>
+    <p style="color:var(--text-muted);margin-bottom:2rem;" id="trackSub">Enter your order ID to see the live status</p>
+    <div style="display:flex;gap:10px;margin-bottom:2rem;">
+      <input type="text" class="form-input" id="trackIdInput" placeholder="Order ID (e.g. ORD-1001)" style="flex:1;" />
+      <button class="btn btn-primary" onclick="trackOrder()">Track</button>
+    </div>
+    <div id="trackResult"></div>
+    <!-- Order History -->
+    <div id="orderHistorySection" style="display:none;">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem;" id="historyTitle">Your Orders</h3>
+      <div id="orderHistoryList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN PAGE ===== -->
+<div class="page" id="adminPage">
+  <div class="admin-page">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+      <h2 class="section-title" id="adminTitle">Admin Dashboard</h2>
+      <span style="font-size:0.8rem;color:var(--text-muted);" id="adminWelcome">Welcome, Admin</span>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTab('overview')" id="tabOverview">Overview</button>
+      <button class="admin-tab" onclick="switchAdminTab('orders')" id="tabOrders">Orders</button>
+      <button class="admin-tab" onclick="switchAdminTab('products')" id="tabProducts">Products</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="adminOverview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label" id="statOrdersLabel">Total Orders</div>
+          <div class="stat-value primary" id="statOrders">24</div>
+          <div class="stat-sub" id="statOrdersSub">+3 today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" id="statRevenueLabel">Revenue</div>
+          <div class="stat-value" id="statRevenue">3,840</div>
+          <div class="stat-sub">EGP</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" id="statActiveLabel">Active Orders</div>
+          <div class="stat-value" id="statActive">7</div>
+          <div class="stat-sub" id="statActiveSub">In progress</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" id="statItemsLabel">Menu Items</div>
+          <div class="stat-value" id="statItems">12</div>
+          <div class="stat-sub" id="statItemsSub">All categories</div>
+        </div>
+      </div>
+      <div class="alert alert-info" id="adminAlert">📊 Today's peak time: 12:00 PM – 2:00 PM. Make sure to have enough staff available.</div>
+      <h3 class="admin-section-title" id="recentOrdersTitle">Recent Orders</h3>
+      <div class="table-wrap">
+        <table class="data-table" id="recentOrdersTable"></table>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div id="adminOrders" style="display:none;">
+      <h3 class="admin-section-title" id="allOrdersTitle">All Orders</h3>
+      <div class="table-wrap">
+        <table class="data-table" id="allOrdersTable"></table>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div id="adminProducts" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <h3 class="admin-section-title" id="productsTitle" style="margin:0;">Manage Products</h3>
+        <button class="btn btn-primary" onclick="openAddProduct()">+ Add Product</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="productsTable"></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="authModalTitle">Welcome Back</h2>
+      <button class="btn-ghost" onclick="closeModal('authModal')" style="font-size:1.1rem;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="tabs">
+        <div class="tab active" id="loginTabBtn" onclick="switchAuthTab('login')" data-i18n-login="Login" data-i18n-ar-login="تسجيل الدخول">Login</div>
+        <div class="tab" id="registerTabBtn" onclick="switchAuthTab('register')" data-i18n-register="Register" data-i18n-ar-register="إنشاء حساب">Register</div>
+      </div>
+      <div class="tab-content active" id="loginTab">
+        <div class="form-group">
+          <label class="form-label" id="emailLabel">Email</label>
+          <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="passLabel">Password</label>
+          <input class="form-input" id="loginPass" type="password" placeholder="••••••••" />
+          <div class="form-error" id="loginError">Invalid credentials. Try admin@nour.com / admin123</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;padding:11px;" onclick="doLogin()" id="loginSubmitBtn">Login</button>
+        <div class="divider" id="orDivider">or</div>
+        <p style="font-size:0.8rem;color:var(--text-muted);text-align:center;" id="demoNote">Demo: admin@nour.com / admin123  |  user@nour.com / user123</p>
+      </div>
+      <div class="tab-content" id="registerTab">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" id="firstLabel">First Name</label>
+            <input class="form-input" id="regFirst" type="text" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" id="lastLabel">Last Name</label>
+            <input class="form-input" id="regLast" type="text" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" id="regEmail" type="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="regPass" type="password" placeholder="min. 6 characters" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="phoneLabel">Phone</label>
+          <input class="form-input" id="regPhone" type="tel" placeholder="+20 100 000 0000" />
+        </div>
+        <button class="btn btn-primary" style="width:100%;padding:11px;" onclick="doRegister()" id="registerSubmitBtn">Create Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal" style="max-width:540px;">
+    <div class="modal-header">
+      <h2 id="checkoutTitle">Complete Your Order</h2>
+      <button class="btn-ghost" onclick="closeModal('checkoutModal')" style="font-size:1.1rem;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label" id="deliveryAddrLabel">Delivery Address</label>
+        <input class="form-input" id="deliveryAddr" type="text" placeholder="123 Street, Cairo" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="notesLabel">Special Instructions</label>
+        <input class="form-input" id="orderNotes" type="text" placeholder="No onions, extra sauce..." />
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="paymentLabel">Payment Method</label>
+        <div onclick="selectPayment('cod')" class="payment-option selected" id="paymentCOD">
+          <div class="payment-icon">💵</div>
+          <div class="payment-info">
+            <div class="payment-name" id="codName">Cash on Delivery</div>
+            <div class="payment-desc" id="codDesc">Pay when your order arrives</div>
+          </div>
+          <div class="payment-radio"></div>
+        </div>
+        <div onclick="selectPayment('online')" class="payment-option" id="paymentOnline">
+          <div class="payment-icon">💳</div>
+          <div class="payment-info">
+            <div class="payment-name" id="onlineName">Online Payment</div>
+            <div class="payment-desc" id="onlineDesc">Credit / Debit Card — Secure checkout</div>
+          </div>
+          <div class="payment-radio"></div>
+        </div>
+        <div class="card-fields" id="cardFields">
+          <div class="form-group" style="margin-top:12px;">
+            <label class="form-label" id="cardNumLabel">Card Number</label>
+            <input class="form-input" id="cardNum" type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" id="expiryLabel">Expiry</label>
+              <input class="form-input" id="expiry" type="text" placeholder="MM/YY" maxlength="5" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">CVV</label>
+              <input class="form-input" id="cvv" type="text" placeholder="123" maxlength="3" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--bg);border-radius:var(--radius-sm);padding:1rem;margin-top:8px;">
+        <div class="summary-row"><span id="checkoutSubLabel">Subtotal</span><span id="checkoutSubtotal"></span></div>
+        <div class="summary-row"><span id="checkoutDelivLabel">Delivery fee</span><span>15 EGP</span></div>
+        <div class="summary-row total"><span id="checkoutTotalLabel">Total</span><span id="checkoutTotal"></span></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('checkoutModal')" id="cancelOrderBtn">Cancel</button>
+      <button class="btn btn-primary" onclick="placeOrder()" id="placeOrderBtn" style="padding:10px 24px;">Place Order →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal" style="text-align:center;">
+    <div class="modal-body" style="padding:3rem 2rem;">
+      <div style="font-size:4rem;margin-bottom:1rem;">🎉</div>
+      <h2 style="margin-bottom:0.5rem;" id="orderSuccessTitle">Order Placed!</h2>
+      <p style="color:var(--text-muted);margin-bottom:1.5rem;" id="orderSuccessMsg">Your order has been confirmed and is being prepared.</p>
+      <div style="background:var(--bg);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.5rem;">
+        <p style="font-size:0.8rem;color:var(--text-muted);" id="yourOrderId">Your Order ID</p>
+        <p style="font-size:1.3rem;font-weight:800;color:var(--primary);" id="successOrderId">ORD-1001</p>
+      </div>
+      <button class="btn btn-primary" style="width:100%;" onclick="goTrackOrder()" id="trackMyOrderBtn">Track My Order →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal-overlay" id="addProductModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="addProductTitle">Add Product</h2>
+      <button class="btn-ghost" onclick="closeModal('addProductModal')" style="font-size:1.1rem;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label" id="pNameLabel">Product Name (EN)</label>
+        <input class="form-input" id="pName" type="text" placeholder="e.g. Grilled Chicken" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="pNameArLabel">Product Name (AR)</label>
+        <input class="form-input" id="pNameAr" type="text" placeholder="مثال: دجاج مشوي" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="pDescLabel">Description (EN)</label>
+        <input class="form-input" id="pDesc" type="text" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" id="pPriceLabel">Price (EGP)</label>
+          <input class="form-input" id="pPrice" type="number" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="pCatLabel">Category</label>
+          <select class="form-input select-input" id="pCat">
+            <option value="Starters">Starters</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Grills">Grills</option>
+            <option value="Pasta">Pasta</option>
+            <option value="Desserts">Desserts</option>
+            <option value="Beverages">Beverages</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="pEmojiLabel">Emoji Icon</label>
+        <input class="form-input" id="pEmoji" type="text" placeholder="🍗" maxlength="4" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addProductModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addProduct()">Add Product</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========= STATE =========
+let lang = 'en';
+let cart = [];
+let currentUser = null;
+let selectedPayment = 'cod';
+let orders = [
+  { id:'ORD-1001', customer:'Ahmed Ali', items:'Kofta Plate ×2, Cola', total:155, status:'preparing', time:'12:35 PM', address:'15 Tahrir St, Cairo', payment:'cod' },
+  { id:'ORD-1002', customer:'Sara Omar', items:'Pasta Bolognese ×1', total:85, status:'delivered', time:'11:20 AM', address:'7 Nile Corniche, Giza', payment:'online' },
+  { id:'ORD-1003', customer:'Mohamed Hassan', items:'Grilled Chicken ×2, Kunafa', total:245, status:'confirmed', time:'1:05 PM', address:'Cairo Tower Area', payment:'cod' },
+  { id:'ORD-1004', customer:'Nour Khaled', items:'Mixed Grill ×1, Pepsi', total:185, status:'preparing', time:'1:15 PM', address:'Maadi, Cairo', payment:'online' },
+];
+let orderCounter = 1005;
+
+// ========= MENU DATA =========
+let menuItems = [
+  { id:1, name:'Kofta Plate', nameAr:'طبق كفتة', desc:'Seasoned minced meat skewers with tahini sauce', descAr:'أسياخ اللحم المفروم المتبّل مع صلصة الطحينة', price:65, category:'Main Course', emoji:'🥙', badge:'popular', rating:4.8 },
+  { id:2, name:'Grilled Chicken', nameAr:'دجاج مشوي', desc:'Half grilled chicken with garlic sauce & pickles', descAr:'نصف دجاجة مشوية مع صلصة الثوم والمخللات', price:95, category:'Grills', emoji:'🍗', badge:'popular', rating:4.7 },
+  { id:3, name:'Mixed Grill', nameAr:'مشويات مشكلة', desc:'Assortment of kofta, chicken & lamb chops', descAr:'تشكيلة من الكفتة والدجاج وريش الضاني', price:165, category:'Grills', emoji:'🍖', badge:'', rating:4.9 },
+  { id:4, name:'Pasta Bolognese', nameAr:'باستا بولونيز', desc:'Rich meat sauce with spaghetti & parmesan', descAr:'صلصة اللحم الغنية مع الاسباغيتي والبارميزان', price:75, category:'Pasta', emoji:'🍝', badge:'new', rating:4.5 },
+  { id:5, name:'Hummus & Pita', nameAr:'حمص وخبز', desc:'Creamy homemade hummus with warm pita bread', descAr:'حمص بيتي كريمي مع خبز بيتا دافئ', price:35, category:'Starters', emoji:'🫓', badge:'popular', rating:4.6 },
+  { id:6, name:'Fattoush Salad', nameAr:'سلطة فتوش', desc:'Fresh vegetables with pomegranate dressing', descAr:'خضروات طازجة مع تتبيلة الرمان', price:45, category:'Starters', emoji:'🥗', badge:'', rating:4.4 },
+  { id:7, name:'Kunafa', nameAr:'كنافة', desc:'Classic cheese kunafa with sugar syrup & pistachio', descAr:'كنافة جبن كلاسيكية مع القطر والفستق', price:55, category:'Desserts', emoji:'🍮', badge:'popular', rating:4.9 },
+  { id:8, name:'Om Ali', nameAr:'أم علي', desc:'Egyptian bread pudding with nuts, raisins & cream', descAr:'حلوى خبز مصرية بالمكسرات والزبيب والقشدة', price:48, category:'Desserts', emoji:'🍞', badge:'new', rating:4.7 },
+  { id:9, name:'Lemon Mint Juice', nameAr:'عصير ليمون بالنعناع', desc:'Fresh squeezed lemon with mint & crushed ice', descAr:'ليمون معصور طازج مع النعناع والثلج المجروش', price:28, category:'Beverages', emoji:'🍋', badge:'', rating:4.5 },
+  { id:10, name:'Mango Juice', nameAr:'عصير مانجو', desc:'Pure Egyptian mango blend — no sugar added', descAr:'مانجو مصرية خالصة — بدون سكر مضاف', price:32, category:'Beverages', emoji:'🥭', badge:'', rating:4.6 },
+  { id:11, name:'Mahshi Koronb', nameAr:'محشي كرنب', desc:'Stuffed cabbage rolls with rice & herbs', descAr:'لفائف الكرنب المحشية بالأرز والأعشاب', price:72, category:'Main Course', emoji:'🥬', badge:'', rating:4.3 },
+  { id:12, name:'Hawawshi', nameAr:'حواوشي', desc:'Spiced minced meat stuffed in crispy bread', descAr:'لحم مفروم متبّل محشو في خبز مقرمش', price:58, category:'Main Course', emoji:'🫔', badge:'spicy', rating:4.8 },
+];
+let activeCategory = 'All';
+
+// ========= I18N =========
+const t = {
+  en: {
+    logoText:'Nour', heroTitle:'Authentic Flavors <span>Delivered</span> to You', heroSub:'From our kitchen to your door — fresh, fast, and full of love.',
+    orderNow:'Order Now', trackBtn:'Track Order', menuTitle:'Our Menu', menuSub:'Freshly prepared with premium ingredients',
+    searchPlaceholder:'Search dishes...', all:'All', addToCart:'Add', cartTitle:'Your Order', cartEmpty:'Your cart is empty',
+    subtotal:'Subtotal', delivery:'Delivery', total:'Total', checkout:'Proceed to Checkout →',
+    trackTitle:'Track Your Order', trackSub:'Enter your order ID to see the live status', track:'Track',
+    deliveryAddr:'Delivery Address', notes:'Special Instructions', payment:'Payment Method',
+    cod:'Cash on Delivery', codDesc:'Pay when your order arrives', online:'Online Payment', onlineDesc:'Credit / Debit Card — Secure checkout',
+    cardNum:'Card Number', expiry:'Expiry', cancel:'Cancel', placeOrder:'Place Order →',
+    orderSuccess:'Order Placed!', orderSuccessMsg:'Your order has been confirmed and is being prepared.',
+    yourOrderId:'Your Order ID', trackMyOrder:'Track My Order →',
+    adminTitle:'Admin Dashboard', adminWelcome:'Welcome, Admin', overview:'Overview', orders:'Orders', products:'Products',
+    totalOrders:'Total Orders', revenue:'Revenue', activeOrders:'Active Orders', menuItems:'Menu Items',
+    recentOrders:'Recent Orders', allOrders:'All Orders', manageProducts:'Manage Products', addProduct:'+ Add Product',
+    login:'Login', register:'Register', emailLabel:'Email', passLabel:'Password', firstName:'First Name', lastName:'Last Name',
+    phone:'Phone', createAccount:'Create Account', loginSubmit:'Login', navTrack:'Track Order',
+    historyTitle:'Your Orders', statOrdersSub:'+3 today', statActiveSub:'In progress', statItemsSub:'All categories',
+    pNameLabel:'Product Name (EN)', pNameArLabel:'Product Name (AR)', pDescLabel:'Description (EN)',
+    pPriceLabel:'Price (EGP)', pCatLabel:'Category', pEmojiLabel:'Emoji Icon',
+    checkoutSub:'Subtotal', checkoutDeliv:'Delivery fee', checkoutTotal:'Total', checkoutTitle:'Complete Your Order',
+    cancelOrder:'Cancel', orDivider:'or', demoNote:'Demo: admin@nour.com / admin123  |  user@nour.com / user123',
+    authTitle:'Welcome Back',
+    statusPreparing:'Preparing', statusConfirmed:'Confirmed', statusDelivered:'Delivered', statusCancelled:'Cancelled',
+    stepOrdered:'Ordered', stepConfirmed:'Confirmed', stepPreparing:'Preparing', stepOnWay:'On the Way', stepDelivered:'Delivered',
+    notFound:'Order not found. Try ORD-1001 or ORD-1002', adminPeak:'📊 Today\'s peak time: 12:00 PM – 2:00 PM.',
+  },
+  ar: {
+    logoText:'نور', heroTitle:'نكهات أصيلة <span>توصل</span> إليك', heroSub:'من مطبخنا إلى بابك — طازج وسريع ومليء بالحب.',
+    orderNow:'اطلب الآن', trackBtn:'تتبع الطلب', menuTitle:'قائمة الطعام', menuSub:'يُحضَّر طازجاً بأفضل المكونات',
+    searchPlaceholder:'ابحث عن أطباق...', all:'الكل', addToCart:'أضف', cartTitle:'طلبك', cartEmpty:'سلتك فارغة',
+    subtotal:'المجموع الفرعي', delivery:'التوصيل', total:'الإجمالي', checkout:'إتمام الطلب →',
+    trackTitle:'تتبع طلبك', trackSub:'أدخل رقم الطلب لمعرفة الحالة', track:'تتبع',
+    deliveryAddr:'عنوان التوصيل', notes:'تعليمات خاصة', payment:'طريقة الدفع',
+    cod:'الدفع عند الاستلام', codDesc:'ادفع عند وصول طلبك', online:'الدفع الإلكتروني', onlineDesc:'بطاقة ائتمان / مدين — دفع آمن',
+    cardNum:'رقم البطاقة', expiry:'تاريخ الانتهاء', cancel:'إلغاء', placeOrder:'تأكيد الطلب ←',
+    orderSuccess:'تم تقديم الطلب!', orderSuccessMsg:'تم تأكيد طلبك وجاري التحضير.',
+    yourOrderId:'رقم طلبك', trackMyOrder:'تتبع طلبي ←',
+    adminTitle:'لوحة الإدارة', adminWelcome:'مرحباً، المدير', overview:'نظرة عامة', orders:'الطلبات', products:'المنتجات',
+    totalOrders:'إجمالي الطلبات', revenue:'الإيرادات', activeOrders:'الطلبات النشطة', menuItems:'عناصر القائمة',
+    recentOrders:'الطلبات الأخيرة', allOrders:'كل الطلبات', manageProducts:'إدارة المنتجات', addProduct:'+ إضافة منتج',
+    login:'تسجيل الدخول', register:'إنشاء حساب', emailLabel:'البريد الإلكتروني', passLabel:'كلمة المرور', firstName:'الاسم الأول', lastName:'الاسم الأخير',
+    phone:'رقم الهاتف', createAccount:'إنشاء حساب', loginSubmit:'دخول', navTrack:'تتبع الطلب',
+    historyTitle:'طلباتك', statOrdersSub:'+3 اليوم', statActiveSub:'قيد التنفيذ', statItemsSub:'كل الفئات',
+    pNameLabel:'اسم المنتج (EN)', pNameArLabel:'اسم المنتج (AR)', pDescLabel:'الوصف (EN)',
+    pPriceLabel:'السعر (جنيه)', pCatLabel:'الفئة', pEmojiLabel:'أيقونة إيموجي',
+    checkoutSub:'المجموع الفرعي', checkoutDeliv:'رسوم التوصيل', checkoutTotal:'الإجمالي', checkoutTitle:'إتمام الطلب',
+    cancelOrder:'إلغاء', orDivider:'أو', demoNote:'تجربة: admin@nour.com / admin123  |  user@nour.com / user123',
+    authTitle:'مرحباً بعودتك',
+    statusPreparing:'قيد التحضير', statusConfirmed:'مؤكد', statusDelivered:'تم التوصيل', statusCancelled:'ملغي',
+    stepOrdered:'تم الطلب', stepConfirmed:'مؤكد', stepPreparing:'قيد التحضير', stepOnWay:'في الطريق', stepDelivered:'تم التوصيل',
+    notFound:'الطلب غير موجود. جرب ORD-1001 أو ORD-1002', adminPeak:'📊 وقت الذروة اليوم: 12:00 – 14:00.',
+  }
+};
+
+function T(key) { return t[lang][key] || key; }
+
+function applyTranslations() {
+  const ids = ['logoText','heroSub','orderNowBtn','trackBtn','menuTitle','menuSub',
+    'cartTitle','cartEmptyText','subtotalLabel','deliveryLabel','totalLabel','checkoutBtn',
+    'trackTitle','trackSub','deliveryAddrLabel','notesLabel','paymentLabel','codName','codDesc','onlineName','onlineDesc',
+    'cardNumLabel','expiryLabel','cancelOrderBtn','placeOrderBtn','orderSuccessTitle','orderSuccessMsg',
+    'yourOrderId','trackMyOrderBtn','adminTitle','adminWelcome','tabOverview','tabOrders','tabProducts',
+    'statOrdersLabel','statRevenueLabel','statActiveLabel','statItemsLabel','recentOrdersTitle','allOrdersTitle','productsTitle',
+    'navTrack','emailLabel','passLabel','firstLabel','lastLabel','phoneLabel','registerSubmitBtn','loginSubmitBtn',
+    'historyTitle','statOrdersSub','statActiveSub','statItemsSub',
+    'pNameLabel','pNameArLabel','pDescLabel','pPriceLabel','pCatLabel','pEmojiLabel',
+    'checkoutSubLabel','checkoutDelivLabel','checkoutTotalLabel','checkoutTitle','cancelOrderBtn','orDivider','demoNote','authModalTitle'
+  ];
+  const map = {
+    logoText:'logoText', heroSub:'heroSub', orderNowBtn:'orderNow', trackBtn:'trackBtn',
+    menuTitle:'menuTitle', menuSub:'menuSub', cartTitle:'cartTitle', cartEmptyText:'cartEmpty',
+    subtotalLabel:'subtotal', deliveryLabel:'delivery', totalLabel:'total', checkoutBtn:'checkout',
+    trackTitle:'trackTitle', trackSub:'trackSub', deliveryAddrLabel:'deliveryAddr', notesLabel:'notes',
+    paymentLabel:'payment', codName:'cod', codDesc:'codDesc', onlineName:'online', onlineDesc:'onlineDesc',
+    cardNumLabel:'cardNum', expiryLabel:'expiry', cancelOrderBtn:'cancel', placeOrderBtn:'placeOrder',
+    orderSuccessTitle:'orderSuccess', orderSuccessMsg:'orderSuccessMsg', yourOrderId:'yourOrderId',
+    trackMyOrderBtn:'trackMyOrder', adminTitle:'adminTitle', adminWelcome:'adminWelcome',
+    tabOverview:'overview', tabOrders:'orders', tabProducts:'products',
+    statOrdersLabel:'totalOrders', statRevenueLabel:'revenue', statActiveLabel:'activeOrders', statItemsLabel:'menuItems',
+    recentOrdersTitle:'recentOrders', allOrdersTitle:'allOrders', productsTitle:'manageProducts',
+    navTrack:'navTrack', emailLabel:'emailLabel', passLabel:'passLabel', firstLabel:'firstName',
+    lastLabel:'lastName', phoneLabel:'phone', registerSubmitBtn:'createAccount', loginSubmitBtn:'loginSubmit',
+    historyTitle:'historyTitle', statOrdersSub:'statOrdersSub', statActiveSub:'statActiveSub', statItemsSub:'statItemsSub',
+    pNameLabel:'pNameLabel', pNameArLabel:'pNameArLabel', pDescLabel:'pDescLabel', pPriceLabel:'pPriceLabel',
+    pCatLabel:'pCatLabel', pEmojiLabel:'pEmojiLabel', checkoutSubLabel:'checkoutSub', checkoutDelivLabel:'checkoutDeliv',
+    checkoutTotalLabel:'checkoutTotal', checkoutTitle:'checkoutTitle',
+    orDivider:'orDivider', demoNote:'demoNote', authModalTitle:'authTitle'
+  };
+  for(const [id, key] of Object.entries(map)) {
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = T(key);
+  }
+  // Hero title special
+  const heroEl = document.getElementById('heroTitle');
+  if(heroEl) heroEl.innerHTML = T('heroTitle');
+  // Admin alert
+  const alertEl = document.getElementById('adminAlert');
+  if(alertEl) alertEl.textContent = T('adminPeak');
+  // Search placeholder
+  const si = document.getElementById('searchInput');
+  if(si) si.placeholder = T('searchPlaceholder');
+  // Login tabs
+  const lt = document.getElementById('loginTabBtn');
+  if(lt) lt.textContent = T('login');
+  const rt = document.getElementById('registerTabBtn');
+  if(rt) rt.textContent = T('register');
+  // Lang toggle
+  const lt2 = document.querySelector('.lang-toggle');
+  if(lt2) lt2.textContent = lang === 'en' ? 'عربي' : 'EN';
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'ar' : 'en';
+  document.documentElement.lang = lang;
+  document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  applyTranslations();
+  renderMenu();
+  renderCategories();
+  renderAdminTables();
+  renderOrderHistory();
+}
+
+// ========= PAGES =========
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const map = { home:'homePage', track:'trackPage', admin:'adminPage' };
+  const el = document.getElementById(map[page]);
+  if(el) el.classList.add('active');
+  if(page === 'admin') renderAdminTables();
+  if(page === 'track') renderOrderHistory();
+  window.scrollTo(0,0);
+}
+
+// ========= MENU =========
+function renderCategories() {
+  const cats = ['All', ...new Set(menuItems.map(i=>i.category))];
+  const bar = document.getElementById('categoriesBar');
+  bar.innerHTML = cats.map(c => `
+    <button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">
+      ${lang === 'ar' && catAr[c] ? catAr[c] : c}
+    </button>
+  `).join('');
+}
+const catAr = { 'All':'الكل','Starters':'المقبلات','Main Course':'الأطباق الرئيسية','Grills':'المشويات','Pasta':'الباستا','Desserts':'الحلويات','Beverages':'المشروبات' };
+
+function setCategory(cat) {
+  activeCategory = cat;
+  renderCategories();
+  renderMenu();
+}
+
+function filterMenu() {
+  renderMenu();
+}
+
+function renderMenu() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = menuItems.filter(item => {
+    const matchCat = activeCategory === 'All' || item.category === activeCategory;
+    const matchSearch = !search || (item.name+item.nameAr+item.desc+item.descAr).toLowerCase().includes(search);
+    return matchCat && matchSearch;
+  });
+  const grid = document.getElementById('menuGrid');
+  if(!filtered.length) { grid.innerHTML = `<p style="color:var(--text-muted);padding:2rem;">No items found.</p>`; return; }
+  grid.innerHTML = filtered.map(item => {
+    const badgeHtml = item.badge ? `<span class="badge badge-${item.badge}">${item.badge === 'popular' ? (lang==='ar'?'الأكثر طلباً':'Popular') : item.badge === 'new' ? (lang==='ar'?'جديد':'New') : (lang==='ar'?'حار':'Spicy')}</span>` : '';
+    const stars = '★'.repeat(Math.floor(item.rating)) + (item.rating % 1 >= 0.5 ? '½' : '');
+    return `
+    <div class="menu-card">
+      <div class="menu-card-img">${item.emoji}</div>
+      <div class="menu-card-body">
+        ${badgeHtml}
+        <div class="menu-card-name">${lang==='ar'?item.nameAr:item.name}</div>
+        <div class="menu-card-desc">${lang==='ar'?item.descAr:item.desc}</div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:12px;">
+          <span class="star" style="font-size:0.85rem;color:var(--accent);">${'★'.repeat(Math.floor(item.rating))}</span>
+          <span style="font-size:0.78rem;color:var(--text-muted);">${item.rating}</span>
+        </div>
+        <div class="menu-card-footer">
+          <div class="price">${item.price} <small>EGP</small></div>
+          <button class="add-btn" onclick="addToCart(${item.id})">+ ${T('addToCart')}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ========= CART =========
+function addToCart(id) {
+  const item = menuItems.find(i => i.id === id);
+  if(!item) return;
+  const existing = cart.find(i => i.id === id);
+  if(existing) existing.qty++;
+  else cart.push({ ...item, qty: 1 });
+  updateCartUI();
+  showToast(`${lang==='ar'?item.nameAr:item.name} ${lang==='ar'?'أُضيف للسلة':'added to cart'}`, 'success');
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  updateCartUI();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) removeFromCart(id);
+  else updateCartUI();
+}
+
+function updateCartUI() {
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cartCountBadge').textContent = count;
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const total = subtotal + (cart.length > 0 ? 15 : 0);
+  document.getElementById('cartSubtotal').textContent = `${subtotal} EGP`;
+  document.getElementById('cartTotal').textContent = `${total} EGP`;
+  document.getElementById('cartEmpty').style.display = cart.length ? 'none' : 'block';
+  document.getElementById('cartFooter').style.display = cart.length ? 'block' : 'none';
+  const itemsEl = document.getElementById('cartItems');
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${lang==='ar'?item.nameAr:item.name}</div>
+        <div class="cart-item-price">${item.price * item.qty} EGP</div>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        </div>
+      </div>
+      <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function toggleCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+function closeCart() {
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+// ========= AUTH =========
+const users = [
+  { email:'admin@nour.com', pass:'admin123', name:'Admin', role:'admin' },
+  { email:'user@nour.com', pass:'user123', name:'Ahmed Ali', role:'user' }
+];
+
+function openAuth() {
+  document.getElementById('authModal').classList.add('open');
+}
+function switchAuthTab(tab) {
+  document.querySelectorAll('#authModal .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#authModal .tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById(tab+'Tab').classList.add('active');
+  document.getElementById(tab+'TabBtn').classList.add('active');
+}
+function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  const user = users.find(u => u.email === email && u.pass === pass);
+  if(user) {
+    currentUser = user;
+    closeModal('authModal');
+    document.getElementById('loginBtn').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'inline-block';
+    if(user.role === 'admin') document.getElementById('navAdmin').style.display = 'inline-block';
+    showToast(lang==='ar' ? `مرحباً، ${user.name}` : `Welcome back, ${user.name}!`, 'success');
+    renderOrderHistory();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+function doRegister() {
+  const first = document.getElementById('regFirst').value;
+  const last = document.getElementById('regLast').value;
+  const email = document.getElementById('regEmail').value;
+  const pass = document.getElementById('regPass').value;
+  if(!first || !email || !pass) { showToast(lang==='ar'?'يرجى ملء جميع الحقول':'Please fill all fields', 'error'); return; }
+  const newUser = { email, pass, name: `${first} ${last}`, role:'user' };
+  users.push(newUser);
+  currentUser = newUser;
+  closeModal('authModal');
+  document.getElementById('loginBtn').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'inline-block';
+  showToast(lang==='ar'?'تم إنشاء حسابك بنجاح':'Account created successfully!', 'success');
+}
+function logout() {
+  currentUser = null;
+  document.getElementById('loginBtn').style.display = 'inline-block';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('navAdmin').style.display = 'none';
+  showToast(lang==='ar'?'تم تسجيل الخروج':'Signed out', '');
+}
+
+// ========= CHECKOUT =========
+function openCheckout() {
+  if(!currentUser) { openAuth(); showToast(lang==='ar'?'يرجى تسجيل الدخول أولاً':'Please login first', ''); return; }
+  closeCart();
+  const sub = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  document.getElementById('checkoutSubtotal').textContent = `${sub} EGP`;
+  document.getElementById('checkoutTotal').textContent = `${sub+15} EGP`;
+  document.getElementById('checkoutModal').classList.add('open');
+}
+function selectPayment(type) {
+  selectedPayment = type;
+  document.getElementById('paymentCOD').classList.toggle('selected', type === 'cod');
+  document.getElementById('paymentOnline').classList.toggle('selected', type === 'online');
+  document.getElementById('cardFields').classList.toggle('show', type === 'online');
+}
+function formatCard(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function placeOrder() {
+  const addr = document.getElementById('deliveryAddr').value;
+  if(!addr) { showToast(lang==='ar'?'يرجى إدخال عنوان التوصيل':'Please enter a delivery address', 'error'); return; }
+  const orderId = 'ORD-' + orderCounter++;
+  const items = cart.map(i => `${lang==='ar'?i.nameAr:i.name} ×${i.qty}`).join(', ');
+  const total = cart.reduce((s,i) => s+i.price*i.qty, 0) + 15;
+  orders.unshift({ id:orderId, customer:currentUser.name, items, total, status:'confirmed', time: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}), address: addr, payment: selectedPayment, userId: currentUser.email });
+  document.getElementById('successOrderId').textContent = orderId;
+  closeModal('checkoutModal');
+  document.getElementById('successModal').classList.add('open');
+  cart = [];
+  updateCartUI();
+  renderAdminTables();
+}
+function goTrackOrder() {
+  closeModal('successModal');
+  showPage('track');
+  renderOrderHistory();
+}
+
+// ========= TRACKING =========
+function trackOrder() {
+  const id = document.getElementById('trackIdInput').value.trim().toUpperCase();
+  const order = orders.find(o => o.id === id);
+  const result = document.getElementById('trackResult');
+  if(!order) {
+    result.innerHTML = `<div class="alert" style="background:#FEE2E2;color:#B91C1C;border:1px solid #FECACA;">${T('notFound')}</div>`;
+    return;
+  }
+  const statusSteps = { confirmed: 1, preparing: 2, onway: 3, delivered: 4 };
+  const statusIdx = { confirmed:1, preparing:2, onway:3, delivered:4 };
+  const si = statusIdx[order.status] || 1;
+  const steps = [
+    {label: T('stepOrdered'), icon:'📝'},
+    {label: T('stepConfirmed'), icon:'✅'},
+    {label: T('stepPreparing'), icon:'👨‍🍳'},
+    {label: T('stepOnWay'), icon:'🛵'},
+    {label: T('stepDelivered'), icon:'🏠'},
+  ];
+  result.innerHTML = `
+    <div class="order-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:1rem;">
+        <div>
+          <div class="order-id">${lang==='ar'?'رقم الطلب':'Order ID'}: ${order.id}</div>
+          <div style="font-weight:700;font-size:1.1rem;">${order.customer}</div>
+        </div>
+        <span class="order-status-badge status-${order.status}">${getStatusDot(order.status)} ${T('status'+capitalize(order.status))}</span>
+      </div>
+      <div class="steps">
+        ${steps.map((s,i) => `
+          <div class="step ${i < si ? 'done' : ''} ${i === si - 1 ? 'active' : ''}">
+            <div class="step-dot">${i < si ? '✓' : s.icon}</div>
+            <div class="step-label">${s.label}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;font-size:0.875rem;">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;color:var(--text-muted);">
+          <span>📦 ${order.items}</span>
+          <span>💰 ${order.total} EGP</span>
+          <span>📍 ${order.address}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function getStatusDot(status) {
+  const dots = { preparing:'🟡', confirmed:'🟢', delivered:'🔵', cancelled:'🔴' };
+  return dots[status] || '⚪';
+}
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function renderOrderHistory() {
+  const section = document.getElementById('orderHistorySection');
+  const list = document.getElementById('orderHistoryList');
+  if(!currentUser) { section.style.display = 'none'; return; }
+  const userOrders = orders.filter(o => o.userId === currentUser.email || currentUser.role === 'admin');
+  if(!userOrders.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  const histTitle = document.getElementById('historyTitle');
+  if(histTitle) histTitle.textContent = T('historyTitle');
+  list.innerHTML = userOrders.slice(0,5).map(o => `
+    <div class="order-history-item">
+      <div class="order-hist-header">
+        <div>
+          <div style="font-weight:700;">${o.id}</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">${o.time}</div>
+        </div>
+        <div style="text-align:right;">
+          <span class="order-status-badge status-${o.status}">${T('status'+capitalize(o.status))}</span>
+          <div style="font-weight:700;color:var(--primary);margin-top:4px;">${o.total} EGP</div>
+        </div>
+      </div>
+      <div class="order-hist-items">
+        <div class="mini-items-list">${o.items.split(', ').map(i=>`<span class="mini-item-chip">${i}</span>`).join('')}</div>
+      </div>
+      <button onclick="document.getElementById('trackIdInput').value='${o.id}';trackOrder();" style="margin-top:8px;background:var(--primary-light);color:var(--primary);border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;font-weight:600;">${T('trackMyOrder').replace(' →','')}</button>
+    </div>
+  `).join('');
+}
+
+// ========= ADMIN =========
+function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  ['overview','orders','products'].forEach(t => { const el = document.getElementById('admin'+capitalize(t)); if(el) el.style.display='none'; });
+  document.getElementById('tab'+capitalize(tab)).classList.add('active');
+  document.getElementById('admin'+capitalize(tab)).style.display = 'block';
+}
+
+function renderAdminTables() {
+  // Recent orders (overview)
+  const recentTable = document.getElementById('recentOrdersTable');
+  if(recentTable) {
+    recentTable.innerHTML = `
+      <thead><tr>
+        <th>ID</th><th>${lang==='ar'?'العميل':'Customer'}</th><th>${lang==='ar'?'العناصر':'Items'}</th>
+        <th>${lang==='ar'?'الإجمالي':'Total'}</th><th>${lang==='ar'?'الحالة':'Status'}</th><th>${lang==='ar'?'الإجراء':'Action'}</th>
+      </tr></thead>
+      <tbody>${orders.slice(0,5).map(o => orderRow(o)).join('')}</tbody>
+    `;
+  }
+  // All orders
+  const allTable = document.getElementById('allOrdersTable');
+  if(allTable) {
+    allTable.innerHTML = `
+      <thead><tr>
+        <th>ID</th><th>${lang==='ar'?'العميل':'Customer'}</th><th>${lang==='ar'?'العناصر':'Items'}</th>
+        <th>${lang==='ar'?'الإجمالي':'Total'}</th><th>${lang==='ar'?'الدفع':'Payment'}</th><th>${lang==='ar'?'الحالة':'Status'}</th><th>${lang==='ar'?'الإجراء':'Action'}</th>
+      </tr></thead>
+      <tbody>${orders.map(o => orderRow(o, true)).join('')}</tbody>
+    `;
+  }
+  // Products
+  const prodTable = document.getElementById('productsTable');
+  if(prodTable) {
+    prodTable.innerHTML = `
+      <thead><tr>
+        <th></th><th>${lang==='ar'?'الاسم':'Name'}</th><th>${lang==='ar'?'الفئة':'Category'}</th>
+        <th>${lang==='ar'?'السعر':'Price'}</th><th>${lang==='ar'?'نشط':'Active'}</th><th>${lang==='ar'?'الإجراء':'Action'}</th>
+      </tr></thead>
+      <tbody>${menuItems.map(item => `
+        <tr>
+          <td><div class="item-thumb">${item.emoji}</div></td>
+          <td><strong>${lang==='ar'?item.nameAr:item.name}</strong><br><span style="font-size:0.78rem;color:var(--text-muted);">${lang==='ar'?item.descAr:item.desc}</span></td>
+          <td>${lang==='ar'&&catAr[item.category]?catAr[item.category]:item.category}</td>
+          <td><strong>${item.price} EGP</strong></td>
+          <td><div class="toggle on" onclick="this.classList.toggle('on')" title="Toggle availability"></div></td>
+          <td>
+            <button class="action-btn" onclick="editProductPrice(${item.id})">${lang==='ar'?'تعديل':'Edit'}</button>
+            <button class="action-btn danger" onclick="deleteProduct(${item.id})" style="margin-top:2px;">${lang==='ar'?'حذف':'Delete'}</button>
+          </td>
+        </tr>
+      `).join('')}</tbody>
+    `;
+  }
+}
+
+function orderRow(o, showPayment = false) {
+  return `<tr>
+    <td><strong>${o.id}</strong></td>
+    <td>${o.customer}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${o.items}</td>
+    <td><strong>${o.total} EGP</strong></td>
+    ${showPayment ? `<td><span style="font-size:0.78rem;">${o.payment === 'cod' ? '💵 COD' : '💳 Online'}</span></td>` : ''}
+    <td><span class="order-status-badge status-${o.status}">${T('status'+capitalize(o.status))}</span></td>
+    <td>
+      <select class="select-input" onchange="updateOrderStatus('${o.id}',this.value)" style="font-size:0.78rem;padding:4px 8px;min-width:120px;">
+        ${['confirmed','preparing','onway','delivered','cancelled'].map(s =>
+          `<option value="${s}" ${o.status===s?'selected':''}>${T('status'+capitalize(s))}</option>`
+        ).join('')}
+      </select>
+    </td>
+  </tr>`;
+}
+
+function updateOrderStatus(id, status) {
+  const order = orders.find(o => o.id === id);
+  if(order) { order.status = status; renderAdminTables(); showToast(lang==='ar'?'تم تحديث الحالة':'Status updated', 'success'); }
+}
+
+function openAddProduct() { document.getElementById('addProductModal').classList.add('open'); }
+function addProduct() {
+  const name = document.getElementById('pName').value;
+  const nameAr = document.getElementById('pNameAr').value;
+  const desc = document.getElementById('pDesc').value;
+  const price = parseInt(document.getElementById('pPrice').value);
+  const category = document.getElementById('pCat').value;
+  const emoji = document.getElementById('pEmoji').value || '🍽';
+  if(!name || !price) { showToast(lang==='ar'?'يرجى ملء الحقول المطلوبة':'Please fill required fields', 'error'); return; }
+  menuItems.push({ id: Date.now(), name, nameAr: nameAr||name, desc, descAr: desc, price, category, emoji, badge:'new', rating:4.5 });
+  closeModal('addProductModal');
+  renderMenu(); renderCategories(); renderAdminTables();
+  document.getElementById('statItems').textContent = menuItems.length;
+  showToast(lang==='ar'?'تم إضافة المنتج':'Product added!', 'success');
+  ['pName','pNameAr','pDesc','pPrice','pEmoji'].forEach(id => { const el=document.getElementById(id); if(el)el.value=''; });
+}
+function editProductPrice(id) {
+  const item = menuItems.find(i => i.id === id);
+  if(!item) return;
+  const newPrice = prompt(`New price for "${lang==='ar'?item.nameAr:item.name}" (current: ${item.price} EGP):`, item.price);
+  if(newPrice && !isNaN(newPrice)) { item.price = parseInt(newPrice); renderAdminTables(); renderMenu(); showToast(lang==='ar'?'تم تحديث السعر':'Price updated', 'success'); }
+}
+function deleteProduct(id) {
+  if(!confirm(lang==='ar'?'هل تريد حذف هذا المنتج؟':'Delete this product?')) return;
+  menuItems = menuItems.filter(i => i.id !== id);
+  renderMenu(); renderCategories(); renderAdminTables();
+  showToast(lang==='ar'?'تم حذف المنتج':'Product deleted', '');
+}
+
+// ========= MODALS =========
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ========= TOAST =========
+function showToast(msg, type = '') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 2800);
+}
+
+// ========= INIT =========
+document.addEventListener('DOMContentLoaded', () => {
+  renderMenu();
+  renderCategories();
+  updateCartUI();
+  applyTranslations();
+});
+</script>
+</body>
+</html>
